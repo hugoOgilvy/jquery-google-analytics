@@ -110,21 +110,19 @@
   }
 
   /**
-   * Tracks an event using the given parameters. 
+   * Tracks an event using the given parameters.
    *
    * The trackEvent method takes four arguments:
-   *
-   *  category - required string used to group events
-   *  action - required string used to define event type, eg. click, download
-   *  label - optional label to attach to event, eg. buy
-   *  value - optional numerical value to attach to event, eg. price
-   *  skip_internal - optional boolean value. If true then internal links are not tracked.
-   *
+   *   category - string, required - used to group events
+   *   action - string, required - used to name event
+   *   label - string, optional - used to provide more detail on event
+   *   value - integer, optional - used to aggregate numeric date about event
    */
   $.trackEvent = function(category, action, label, value) {
-    if(typeof pageTracker == 'undefined') {
-      debug('FATAL: pageTracker is not defined'); // blocked by whatever
-    } else {
+    if (typeof pageTracker == 'undefined') {
+      debug('FATAL ERROR: pageTracker is not defined'); // blocked by whatever
+    }
+    else {
       pageTracker._trackEvent(category, action, label, value);
     }
   };
@@ -178,17 +176,19 @@
         return true;
       });
     });
-    
-    /**
-     * If second parameter is a string: returns the value of the second parameter.
-     * If the second parameter is a function: passes the element to the function and returns function's return value.
-     */
-    function evaluate(element, text_or_function) {
-      if(typeof text_or_function == 'function') {
-        text_or_function = text_or_function(element);
-      }
-      return text_or_function;
-    };
+
+  };
+
+  /**
+   * 
+   * If second parameter is a string: returns the value of the second parameter.
+   * If the second parameter is a function: passes the element to the function and returns function's return value.
+   */
+  function evaluate(element, stringOrFunction) {
+    if (typeof stringOrFunction == 'function') {
+      stringOrFunction = stringOrFunction(element);
+    }
+    return stringOrFunction;
   };
 
   /**
