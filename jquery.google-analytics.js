@@ -136,33 +136,33 @@
   $.fn.track = function(options) {
     // Add event handler to all matching elements.
     return $(this).each(function() {
-      var link = $(this);
+      var $element = $(this);
 
       // Prevent an element from being tracked multiple times.
-      if (link.hasClass('tracked')) {
+      if ($element.hasClass('tracked')) {
         return false;
       }
       else {
-        link.addClass('tracked');
+        $element.addClass('tracked');
       }
 
       // Use default options, if necessary
       var settings = $.extend({}, $.fn.track.defaults, options);
 
-      var category = evaluate(link, settings.category);
-      var action   = evaluate(link, settings.action);
-      var label    = evaluate(link, settings.label);
-      var value    = evaluate(link, settings.value);
-      var event_name = evaluate(link, settings.event_name);
+      var category = evaluate($element, settings.category);
+      var action   = evaluate($element, settings.action);
+      var label    = evaluate($element, settings.label);
+      var value    = evaluate($element, settings.value);
+      var event_name = evaluate($element, settings.event_name);
       
       var message  = "category:'" + category + "' action:'" + action + "' label:'" + label + "' value:'" + value + "'";
       
       debug('Tracking ' + event_name + ' ' + message);
 
-      link.bind(event_name, function() {       
+      $element.bind(event_name, function() {       
         
         // Should we skip internal links?
-        var skip = settings.skip_internal && (link[0].hostname == location.hostname);
+        var skip = settings.skip_internal && ($element[0].hostname == location.hostname);
       
         if(!skip) {
           $.trackEvent(category, action, label, value);
