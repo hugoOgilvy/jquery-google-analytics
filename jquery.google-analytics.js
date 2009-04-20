@@ -134,19 +134,17 @@
    *
    */
   $.fn.track = function(options) {
-    
-    var element = $(this);
-    
-    // Prevent link from being tracked multiple times 
-    if (element.hasClass("tracked")) {
-      return;
-    }
+    // Add event handler to all matching elements.
+    return $(this).each(function() {
+      var link = $(this);
 
-    element.addClass("tracked");
-
-    // Add click handler to all matching elements
-    return this.each(function() {
-      var link   = $(this);
+      // Prevent an element from being tracked multiple times.
+      if (link.hasClass('tracked')) {
+        return false;
+      }
+      else {
+        link.addClass('tracked');
+      }
 
       // Use default options, if necessary
       var settings = $.extend({}, $.fn.track.defaults, options);
