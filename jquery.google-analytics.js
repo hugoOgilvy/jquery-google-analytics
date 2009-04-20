@@ -162,8 +162,8 @@
       var message = "category:'" + category + "' action:'" + action + "' label:'" + label + "' value:'" + value + "'";
       debug('Tracking ' + event_name + ' ' + message);
 
-      // Bind the event to this element.
-      $element.bind(event_name, function() {
+      // Bind the event to this element, using a '.track' namespace.
+      $element.bind(event_name + '.track', function() {
         // Skip internal links if specified.
         var skip = settings.skip_internal && $element[0].hostname == location.hostname;
 
