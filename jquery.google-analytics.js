@@ -74,7 +74,7 @@
 
     // Use default options, if necessary
     var settings = $.extend({}, {onload: true, status_code: 200}, options);
-    var src  = host + 'google-analytics.com/ga.js';
+    var src = host + 'google-analytics.com/ga.js';
 
     function init_analytics() {
       if (typeof _gat != undefined) {
@@ -82,9 +82,10 @@
 
         pageTracker = _gat._getTracker(account_id);
 
-        if(settings.status_code == null || settings.status_code == 200) {
+        if (settings.status_code == null || settings.status_code == 200) {
           pageTracker._trackPageview();
-        } else {
+        }
+        else {
           debug('Tracking error ' + settings.status_code);
           pageTracker._trackPageview("/" + settings.status_code + ".html?page=" + document.location.pathname + document.location.search + "&from=" + document.referrer);
         }
@@ -100,11 +101,12 @@
         init_analytics();
       })
     }
-    
+
     // Enable tracking when called or on page load?
-    if(settings.onload == true || settings.onload == null) {
+    if (settings.onload == true || settings.onload == null) {
       $(window).load(load_script);
-    } else {
+    }
+    else {
       load_script();
     }
   }
@@ -128,10 +130,8 @@
   };
 
   /**
-   * Adds click tracking to elements. Usage:
-   *
-   *  $('a').track()
-   *
+   * Adds click tracking to element(s). Usage:
+   *   $('a').track();
    */
   $.fn.track = function(options) {
     // Add event handler to all matching elements.
@@ -146,41 +146,43 @@
         $element.addClass('tracked');
       }
 
-      // Use default options, if necessary
+      // Merge custom options with defaults.
       var settings = $.extend({}, $.fn.track.defaults, options);
 
-      var category = evaluate($element, settings.category);
-      var action   = evaluate($element, settings.action);
-      var label    = evaluate($element, settings.label);
-      var value    = evaluate($element, settings.value);
+      // Evaluate custom settings.
+      var category   = evaluate($element, settings.category);
+      var action     = evaluate($element, settings.action);
+      var label      = evaluate($element, settings.label);
+      var value      = evaluate($element, settings.value);
       var event_name = evaluate($element, settings.event_name);
-      
-      var message  = "category:'" + category + "' action:'" + action + "' label:'" + label + "' value:'" + value + "'";
-      
+
+      var message = "category:'" + category + "' action:'" + action + "' label:'" + label + "' value:'" + value + "'";
       debug('Tracking ' + event_name + ' ' + message);
 
-      $element.bind(event_name, function() {       
-        
-        // Should we skip internal links?
-        var skip = settings.skip_internal && ($element[0].hostname == location.hostname);
-      
-        if(!skip) {
+      // Bind the event to this element.
+      $element.bind(event_name, function() {
+        // Skip internal links if specified.
+        var skip = settings.skip_internal && $element[0].hostname == location.hostname;
+
+        if (!skip) {
           $.trackEvent(category, action, label, value);
           debug('Tracked ' + message);
-        } else {
+        }
+        else {
           debug('Skipped ' + message);
         }
 
         return true;
       });
     });
-
   };
 
   /**
-   * 
+   * Checks whether a setting value is a string or a function.
+   *
    * If second parameter is a string: returns the value of the second parameter.
-   * If the second parameter is a function: passes the element to the function and returns function's return value.
+   * If second parameter is a function: passes the element to the function and
+   *   returns function's return value.
    */
   function evaluate(element, stringOrFunction) {
     if (typeof stringOrFunction == 'function') {
@@ -190,7 +192,7 @@
   };
 
   /**
-   * Prints to Firebug console, if available. To enable:
+   * Prints to Javascript console, if available. To enable:
    *   $.fn.track.defaults.debug = true;
    */
   function debug(message) {
